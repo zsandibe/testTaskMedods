@@ -14,6 +14,8 @@ type Config struct {
 	NameCollection string
 	AccessKey      string
 	RefreshKey     string
+	ServerHost     string
+	ServerPort     string
 }
 
 func NewConfig() Config {
@@ -27,5 +29,6 @@ func NewConfig() Config {
 		NameDb:         os.Getenv("NAME_DB"),
 		NameCollection: os.Getenv("NAME_COLLECTION"),
 		AccessKey:      os.Getenv("ACCESS_KEY"),
+		ServerHost:     os.Getenv("SERVER_HOST"),
 	}
 }
