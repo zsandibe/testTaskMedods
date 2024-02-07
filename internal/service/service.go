@@ -1,8 +1,13 @@
 package service
 
-import "testTaskMedods/internal/repository"
+import (
+	"testTaskMedods/internal/domain"
+	"testTaskMedods/internal/repository"
+)
 
 type Service interface {
+	Create(session domain.Session) error
+	Update(session domain.Session) error
 }
 
 type service struct {

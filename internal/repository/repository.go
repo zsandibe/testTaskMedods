@@ -1,16 +1,25 @@
 package repository
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"testTaskMedods/internal/domain"
+
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 type Repository interface {
+	Create(session domain.Session) error
+	GetSessionById(sessionId uuid.UUID) (domain.Session, error)
+	DeleteSessionById(sessionId uuid.UUID) error
+	Update(session domain.Session) error
 }
 
 type repositoryMongo struct {
-	db *mongo.Database
+	collection *mongo.Collection
 }
 
 func NewRepository(db *mongo.Database) *repositoryMongo {
 	return &repositoryMongo{
-		db: db,
+		collection: db.Collection("session"),
 	}
 }

@@ -30,5 +30,6 @@ func NewConfig() Config {
 		NameCollection: os.Getenv("NAME_COLLECTION"),
 		AccessKey:      os.Getenv("ACCESS_KEY"),
 		ServerHost:     os.Getenv("SERVER_HOST"),
+		ServerPort:     os.Getenv("SERVER_PORT"),
 	}
 }
