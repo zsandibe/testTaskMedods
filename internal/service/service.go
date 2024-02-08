@@ -4,11 +4,13 @@ import (
 	"testTaskMedods/config"
 	"testTaskMedods/internal/domain"
 	"testTaskMedods/internal/repository"
+
+	"github.com/google/uuid"
 )
 
 type Service interface {
-	Create(session domain.Session) error
-	Update(session domain.Session) error
+	Create(guid uuid.UUID) (domain.TokenPair, error)
+	Update(sessionId uuid.UUID, refreshToken []byte) (domain.TokenPair, error)
 }
 
 type service struct {
