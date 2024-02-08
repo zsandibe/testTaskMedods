@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -16,8 +18,8 @@ type Config struct {
 	RefreshKey      string
 	ServerHost      string
 	ServerPort      string
-	AccessTokenAge  string
-	RefreshTokenAge string
+	AccessTokenAge  time.Duration
+	RefreshTokenAge time.Duration
 }
 
 func NewConfig() Config {
@@ -25,7 +27,11 @@ func NewConfig() Config {
 		fmt.Printf("Error loading .env file: %v", err)
 		return Config{}
 	}
-
+	accessTokenAge, err := strconv.Atoi(os.Getenv("ACCESS_TOKEN_AGE"))
+	if err != nil {
+		return Config{}
+	}
+	refreshTokenAge, err := strconv.Atoi(os.Getenv("REFRESH_TOKEN_AGE"))
 	return Config{
 		MongoUrl:        os.Getenv("MONGODB_URL"),
 		NameDb:          os.Getenv("NAME_DB"),
@@ -33,7 +39,7 @@ func NewConfig() Config {
 		AccessKey:       os.Getenv("ACCESS_KEY"),
 		ServerHost:      os.Getenv("SERVER_HOST"),
 		ServerPort:      os.Getenv("SERVER_PORT"),
-		AccessTokenAge:  os.Getenv("ACCESS_TOKEN_AGE"),
-		RefreshTokenAge: os.Getenv("REFRESH_TOKEN_AGE"),
+		AccessTokenAge:  time.Duration(accessTokenAge),
+		RefreshTokenAge: time.Duration(refreshTokenAge),
 	}
 }
