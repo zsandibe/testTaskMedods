@@ -2,11 +2,10 @@ package domain
 
 import "github.com/google/uuid"
 
-type AuthRequest struct {
+type LoginRequest struct {
 	Guid uuid.UUID `json:"guid"`
 }
 
 type RefreshRequest struct {
-	SessionID    uuid.UUID `json:"session_id"`
-	RefreshToken []byte    `json:"refresh_token"`
+	SessionID uuid.UUID `json:"session_id"`
 }

@@ -10,7 +10,8 @@ import (
 
 type Service interface {
 	Create(guid uuid.UUID) (domain.TokenPair, error)
-	Update(sessionId uuid.UUID, refreshToken []byte) (domain.TokenPair, error)
+	Update(sessionId uuid.UUID) (domain.TokenPair, error)
+	GetAllSessions() ([]domain.Session, error)
 }
 
 type service struct {

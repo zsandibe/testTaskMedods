@@ -17,7 +17,6 @@ import (
 func Start() {
 	config := config.NewConfig()
 	pkg.InfoLog.Println("Config loaded")
-
 	storage, err := storage.NewMongoDb(config)
 	if err != nil {
 		pkg.ErrorLog.Println(err)
@@ -25,10 +24,10 @@ func Start() {
 	}
 	pkg.InfoLog.Println("Storage loaded")
 
-	repository := repository.NewRepository(storage)
+	repository := repository.NewRepository(storage, config)
 	pkg.InfoLog.Println("Repository loaded")
 
-	service := service.NewService(repository)
+	service := service.NewService(repository, config)
 	pkg.InfoLog.Println("Service loaded")
 
 	delivery := delivery.NewHandler(service)

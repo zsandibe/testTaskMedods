@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testTaskMedods/internal/domain"
 	"testTaskMedods/pkg"
 
@@ -43,6 +44,7 @@ func (r *repositoryMongo) DeleteSessionById(sessionId uuid.UUID) error {
 }
 
 func (r *repositoryMongo) Update(session domain.Session) error {
+	fmt.Println(session.HashedRefreshToken, "after")
 	filter := bson.D{{"id", session.Id}}
 	update := bson.D{{"$set", bson.D{
 		{"hashed_refresh_token", session.HashedRefreshToken},
@@ -54,4 +56,29 @@ func (r *repositoryMongo) Update(session domain.Session) error {
 		return errors.New("Can`t update session document")
 	}
 	return nil
+}
+
+func (r *repositoryMongo) GetAllSessions() ([]domain.Session, error) {
+	ctx := context.Background()
+	rows, err := r.collection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, errors.New("Can`t get all sessions rows")
+	}
+	defer rows.Close(ctx)
+
+	var sessions []domain.Session
+
+	for rows.Next(ctx) {
+		var session domain.Session
+		if err := rows.Decode(&session); err != nil {
+			fmt.Println("Error in getting")
+			return nil, errors.New("Failed to decode row")
+		}
+		sessions = append(sessions, session)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	fmt.Println("sessions:", sessions)
+	return sessions, nil
 }
